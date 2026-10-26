@@ -28,7 +28,7 @@ class Setting extends Model
         return static::for('bimbel');
     }
 
-    /** Pengaturan per website (unit); logo & WhatsApp tetap diambil dari current(). */
+    /** Pengaturan per website (unit); WhatsApp tetap diambil dari current(), logo bila kosong. */
     public static function for(string $unit): self
     {
         return static::query()->firstOrCreate(['unit' => $unit], ['hero_title' => match ($unit) {

@@ -1,13 +1,27 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-site="{{ \App\Support\Site::unit() }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title')</title>
   <meta name="description" content="@yield('description')">
-  @if ($logo = $setting->imageUrl('logo'))
+  @if ($logo)
   <link rel="icon" href="{{ $logo }}">
   <link rel="apple-touch-icon" href="{{ $logo }}">
+  @endif
+  @php
+    // preview saat link dibagikan (WhatsApp, Facebook, dll.): halaman detail mengirim $shareImage,
+    // halaman lain memakai gambar hero. URL gambar harus lengkap dengan domain.
+    $ogImage = ($shareImage ?? null) ?: ($siteSetting->imageUrl('hero_image') ?: $logo);
+  @endphp
+  <meta property="og:type" content="{{ isset($shareImage) ? 'article' : 'website' }}">
+  <meta property="og:site_name" content="{{ \App\Support\Site::name() }}">
+  <meta property="og:title" content="@yield('title')">
+  <meta property="og:description" content="@yield('description')">
+  <meta property="og:url" content="{{ url()->current() }}">
+  @if ($ogImage)
+  <meta property="og:image" content="{{ str_starts_with($ogImage, '/') ? request()->getSchemeAndHttpHost().$ogImage : $ogImage }}">
+  <meta name="twitter:card" content="summary_large_image">
   @endif
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">

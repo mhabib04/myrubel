@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Achievement;
+use App\Models\Activity;
 use App\Models\Branch;
 use App\Models\Gallery;
+use App\Models\Info;
 use App\Models\Program;
 use App\Models\Setting;
 use Database\Seeders\DatabaseSeeder;
@@ -98,6 +100,33 @@ class PublicPagesTest extends TestCase
         $this->get('/')->assertSee('data-wa-number="628111"', false);
     }
 
+    public function test_preview_link_memakai_poster_halaman_detail(): void
+    {
+        Setting::current()->update(['logo' => 'pengaturan/logo.png', 'hero_image' => 'pengaturan/hero.jpg']);
+        $program = Program::create(['name' => 'Kelas Intensif', 'short_desc' => 'Intensif.', 'image' => 'programs/intensif.jpg']);
+        $event = Activity::create(['title' => 'Try Out Akbar', 'photo' => 'kegiatan/tryout.jpg']);
+        $info = Info::create(['title' => 'Libur Semester', 'poster' => 'info/libur.jpg']);
+        $tanpaPoster = Info::create(['title' => 'Jadwal Baru']);
+        $root = rtrim(config('app.url'), '/'); // alamat pendek di test memakai domain APP_URL
+
+        foreach ([
+            "/program/{$program->slug}" => '/storage/programs/intensif.jpg',
+            "/event/{$event->slug}" => '/storage/kegiatan/tryout.jpg',
+            "/info/{$info->slug}" => '/storage/info/libur.jpg',
+            "/info/{$tanpaPoster->slug}" => '/storage/pengaturan/logo.png',
+            '/' => '/storage/pengaturan/hero.jpg',
+        ] as $url => $image) {
+            $this->get($url)->assertOk()
+                ->assertSee("<meta property=\"og:image\" content=\"$root$image\">", false)
+                ->assertSee('<link rel="icon" href="/storage/pengaturan/logo.png">', false); // ikon tab tetap logo
+        }
+
+        $this->get("/program/{$program->slug}")
+            ->assertSee('<meta property="og:title" content="Kelas Intensif – Bimbel My Rubel Pasaman Barat">', false)
+            ->assertSee('<meta property="og:type" content="article">', false)
+            ->assertSee("<meta property=\"og:url\" content=\"$root/program/{$program->slug}\">", false);
+    }
+
     public function test_logo_menggantikan_kotak_mr_dan_jadi_ikon_tab(): void
     {
         $this->get('/')
@@ -108,7 +137,7 @@ class PublicPagesTest extends TestCase
 
         foreach (['/', '/program/sd'] as $url) {
             $this->get($url)
-                ->assertSee('<img src="/storage/pengaturan/logo.png" alt="Logo My Rubel">', false)
+                ->assertSee('<img src="/storage/pengaturan/logo.png" alt="Logo Bimbel My Rubel">', false)
                 ->assertSee('<link rel="icon" href="/storage/pengaturan/logo.png">', false)
                 ->assertDontSee('<span class="mark">MR</span>', false);
         }

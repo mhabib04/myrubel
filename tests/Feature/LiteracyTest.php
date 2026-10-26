@@ -98,7 +98,7 @@ class LiteracyTest extends TestCase
     public function test_detail_karya(): void
     {
         $work = Work::create(['type' => 'cerpen', 'title' => 'Senja di Simpang Empat', 'author' => 'Aisyah Nur', 'date' => '2026-03-14',
-            'content' => '<p>Sore itu langit <strong>jingga</strong>.</p>']);
+            'poster' => 'karya/senja.jpg', 'content' => '<p>Sore itu langit <strong>jingga</strong>.</p>']);
 
         $this->get("$this->base/karya/cerpen/{$work->slug}")
             ->assertOk()
@@ -108,6 +108,7 @@ class LiteracyTest extends TestCase
             ->assertSee('14 Maret 2026')
             ->assertSee('<strong>jingga</strong>', false)
             ->assertSee('data-share', false)
+            ->assertSee('<meta property="og:image" content="http://literacy.test/storage/karya/senja.jpg">', false)
             ->assertSee('Kembali ke Cerpen');
 
         $this->get("$this->base/karya/puisi/{$work->slug}")->assertNotFound(); // jenis harus cocok
@@ -118,8 +119,27 @@ class LiteracyTest extends TestCase
         Setting::current()->update(['logo' => 'pengaturan/logo.png', 'whatsapp' => '081111111111']);
 
         $this->get("$this->base/")
-            ->assertSee('<img src="/storage/pengaturan/logo.png" alt="Logo My Rubel">', false)
+            ->assertSee('<img src="/storage/pengaturan/logo.png" alt="Logo My Rubel Literacy Center">', false)
             ->assertSee('data-wa-number="6281111111111"', false);
+    }
+
+    public function test_logo_sendiri_menggantikan_milik_my_rubel(): void
+    {
+        Setting::current()->update(['logo' => 'pengaturan/logo.png']);
+        Setting::for('literacy')->update(['logo' => 'pengaturan/logo-literacy.png']);
+
+        $this->get("$this->base/")
+            ->assertSee('<img src="/storage/pengaturan/logo-literacy.png" alt="Logo My Rubel Literacy Center">', false)
+            ->assertSee('<link rel="icon" href="/storage/pengaturan/logo-literacy.png">', false)
+            ->assertSee('<html lang="id" data-site="literacy">', false);
+
+        // website lain tetap memakai logo & warnanya sendiri
+        $this->get("$this->main/")
+            ->assertSee('<img src="/storage/pengaturan/logo.png" alt="Logo Bimbel My Rubel">', false)
+            ->assertSee('<html lang="id" data-site="bimbel">', false);
+        $this->get('http://motivation.test/')
+            ->assertSee('<img src="/storage/pengaturan/logo.png"', false)
+            ->assertSee('<html lang="id" data-site="motivation">', false);
     }
 
     public function test_admin_literacy_menyimpan_data_ke_unit_literacy(): void

@@ -1,5 +1,5 @@
 {{-- Halaman "Lihat Selengkapnya" untuk Event & Info: $item, $navActive, $image, $meta --}}
-@extends('layouts.app', ['navActive' => $navActive])
+@extends('layouts.app', ['navActive' => $navActive, 'shareImage' => $image ?: $logo])
 
 @php
   $label = $navActive === 'event' ? 'Event' : 'Info';

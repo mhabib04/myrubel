@@ -18,8 +18,8 @@ use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
 /**
- * Pengaturan website Motivation & Outbound Center: hero & media sosial. Logo dan WhatsApp
- * memakai Pengaturan My Rubel.
+ * Pengaturan website Motivation & Outbound Center: logo, hero & media sosial. WhatsApp
+ * memakai Pengaturan My Rubel; logo juga, bila dikosongkan.
  *
  * @property-read Schema $form
  */
@@ -51,6 +51,11 @@ class PengaturanMotivation extends Page
             ->statePath('data')
             ->model(Setting::for('motivation'))
             ->components([
+                Section::make('Logo')->schema([
+                    Fields::image('logo', 'Logo', 'pengaturan')
+                        ->maxSize(1024)
+                        ->helperText('Tampil di header dan ikon tab browser. Disarankan PNG persegi berlatar transparan, maks. 1 MB. Kosongkan untuk memakai logo My Rubel.'),
+                ]),
                 Section::make('Hero (bagian paling atas)')->columns(2)->schema([
                     TextInput::make('hero_title')->label('Judul')->required()->maxLength(255)->columnSpanFull()
                         ->helperText('Apit kata dengan *bintang* untuk sorotan kuning, mis. My Rubel *Motivation* & Outbound Center.'),
@@ -60,7 +65,7 @@ class PengaturanMotivation extends Page
                     Fields::image('hero_image', 'Gambar hero', 'pengaturan', '4:5 (1080×1350 px)')->columnSpanFull(),
                 ]),
                 Section::make('Media sosial')->columns(2)
-                    ->description('Logo dan nomor WhatsApp memakai Pengaturan My Rubel.')
+                    ->description('Nomor WhatsApp memakai Pengaturan My Rubel.')
                     ->schema([
                         TextInput::make('tiktok_url')->label('Link TikTok')->url()->maxLength(255)
                             ->helperText('Kosongkan untuk memakai link My Rubel.'),

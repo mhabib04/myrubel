@@ -1,4 +1,4 @@
-@extends('layouts.app', ['navActive' => 'program'])
+@extends('layouts.app', ['navActive' => 'program', 'shareImage' => $program->imageUrl('image') ?: $logo])
 
 @section('title', $program->name.' – '.\App\Support\Site::name().' Pasaman Barat')
 @section('description', 'Program belajar dan fasilitas unggulan '.\App\Support\Site::name().' Pasaman Barat.')

@@ -1,6 +1,6 @@
 {{-- Detail satu karya: jenis, poster, penulis, tanggal, isi, tombol bagikan. $work --}}
 @use('App\Support\Site')
-@extends('layouts.app', ['navActive' => 'karya', 'workType' => $work->type])
+@extends('layouts.app', ['navActive' => 'karya', 'workType' => $work->type, 'shareImage' => $work->imageUrl('poster') ?: $logo])
 
 @section('title', $work->title.' – My Rubel Literacy Center Pasaman Barat')
 @section('description', $work->excerpt(30) ?: $work->typeLabel().' karya siswa My Rubel Literacy Center.')
