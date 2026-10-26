@@ -24,6 +24,8 @@ class Fields
         return FileUpload::make($name)
             ->label($label)
             ->image()
+            // tanpa SVG: file SVG bisa berisi skrip yang ikut berjalan saat dibuka dari website
+            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
             ->disk('public')
             ->directory($directory)
             ->visibility('public')
