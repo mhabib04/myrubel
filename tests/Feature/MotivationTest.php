@@ -72,6 +72,27 @@ class MotivationTest extends TestCase
             ->assertSee('<strong>outbound</strong>', false);
     }
 
+    public function test_menu_link_dan_kunjungi_juga_menuju_dua_website_lainnya(): void
+    {
+        $main = rtrim(config('app.url'), '/').'/';
+        $sites = [
+            "$this->main/" => ['http://literacy.test', 'http://motivation.test'],
+            'http://literacy.test/' => [$main, 'http://motivation.test'],
+            "$this->base/" => [$main, 'http://literacy.test'],
+        ];
+
+        foreach ($sites as $url => $links) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $this->assertStringContainsString('class="nav-drop nav-drop-end"', $html);
+            $this->assertStringContainsString('Kunjungi Juga', $html);
+            foreach ($links as $link) {
+                $this->assertSame(2, substr_count($html, "href=\"$link"), "$url harus menautkan $link di menu & Kunjungi Juga");
+            }
+        }
+
+        $this->assertStringContainsString('My Rubel Motivation &amp; Outbound Center</a>', $this->get("$this->main/")->getContent());
+    }
+
     public function test_admin_motivation_menyimpan_data_ke_unit_motivation(): void
     {
         $this->actingAs(User::first());

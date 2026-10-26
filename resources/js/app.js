@@ -118,7 +118,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrops
 
 // pasangan [section, item menu]; section karya (data-nav="karya") menyalakan tombol dropdown Karya
 const navItems = [...document.querySelectorAll('.nav-links a[href^="#"]')];
-const dropBtn = document.querySelector(".nav-drop-btn");
+const dropBtn = document.querySelector(".nav-drop-karya .nav-drop-btn");
 const spy = [
   ...navItems.map((a) => [document.querySelector(a.getAttribute("href")), a]),
   ...(dropBtn ? [...document.querySelectorAll('[data-nav="karya"]')].map((s) => [s, dropBtn]) : []),

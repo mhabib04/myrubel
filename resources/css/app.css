@@ -404,6 +404,12 @@ html { scroll-padding-top: 84px; }
 .nav-drop.open .nav-drop-menu { display: flex; flex-direction: column; gap: 2px; }
 .nav-links .nav-drop-menu a { border-radius: 10px; }
 .nav-links .nav-drop-menu a.current { color: var(--yellow); }
+/* menu Link di ujung kanan: dibuka rata kanan supaya tidak keluar layar */
+.nav-drop-end .nav-drop-menu { left: auto; right: 0; white-space: nowrap; }
+.other-sites { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 40px; padding: 0 16px; }
+.other-sites a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; border: 1px solid hsla(0, 0%, 100%, .18); color: #fff; font-weight: 600; font-size: 15px; transition: background .2s, border-color .2s, color .2s; }
+.other-sites a:hover { background: var(--yellow); border-color: var(--yellow); color: var(--navy-dark); }
+.other-sites .icon { width: 18px; height: 18px; }
 
 /* ================= Karya Literacy Center ================= */
 .more { text-align: center; margin-top: 28px; }
@@ -425,6 +431,7 @@ a.pager-btn:hover, a.pager-num:hover { background: var(--navy); color: #fff; bor
 @media (max-width: 1080px) {
   .nav-drop-btn { width: 100%; justify-content: space-between; padding: 12px 16px; border-radius: 12px; }
   .nav-drop-menu { position: static; min-width: 0; padding: 0 0 4px 16px; border: 0; box-shadow: none; }
+  .nav-drop-end .nav-drop-menu { white-space: normal; }
 }
 
 @media (max-width: 767px) {

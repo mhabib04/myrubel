@@ -67,7 +67,7 @@ class LiteracyTest extends TestCase
         $this->assertStringNotContainsString('Puisi Nomor 2<', $html);
         $this->assertStringContainsString('Karya oleh Rina', $html);
         $this->assertStringContainsString('Lihat yang lainnya', $html);
-        $this->assertStringContainsString('class="nav-drop"', $html);
+        $this->assertStringContainsString('class="nav-drop nav-drop-karya"', $html);
         $this->assertStringContainsString("$this->base/karya/puisi", $html);
         $this->assertStringContainsString("$this->base/karya/cerpen", $html);
         $this->assertStringNotContainsString("$this->base/karya/essay", $html); // jenis tanpa karya tidak masuk menu

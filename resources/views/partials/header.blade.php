@@ -12,7 +12,7 @@
       @foreach ($menu as $id => $label)
         @if ($id === 'karya')
         {{-- dropdown: tiap jenis karya langsung ke halaman daftarnya --}}
-        <div class="nav-drop">
+        <div class="nav-drop nav-drop-karya">
           <button type="button" class="nav-drop-btn{{ $active === 'karya' ? ' active' : '' }}" aria-expanded="false">{{ $label }}<svg class="icon"><use href="#i-down"/></svg></button>
           <div class="nav-drop-menu">
             @foreach (Site::workTypes($sections) as $type => $typeLabel)
@@ -24,6 +24,15 @@
         <a href="{{ $base }}#{{ $id }}"@if ($id === $active) class="active"@endif>{{ $label }}</a>
         @endif
       @endforeach
+      {{-- website My Rubel lainnya --}}
+      <div class="nav-drop nav-drop-end">
+        <button type="button" class="nav-drop-btn" aria-expanded="false">Link<svg class="icon"><use href="#i-down"/></svg></button>
+        <div class="nav-drop-menu">
+          @foreach (Site::others() as $name => $url)
+          <a href="{{ $url }}">{{ $name }}</a>
+          @endforeach
+        </div>
+      </div>
     </nav>
     <button class="burger" aria-label="Buka menu" aria-expanded="false" aria-controls="nav-links"><svg class="icon"><use href="#i-menu"/></svg></button>
   </div>

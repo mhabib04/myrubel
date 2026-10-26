@@ -106,6 +106,24 @@ class Site
         return route(static::UNITS[static::$unit]['route'].$name, $parameters);
     }
 
+    /**
+     * Website My Rubel lainnya (selain yang sedang dibuka), untuk menu Link & bagian di atas Ikuti Kami.
+     * Website utama memakai APP_URL karena bisa berada di subfolder; subdomain memakai route domainnya.
+     *
+     * @return array<string, string> nama website => URL beranda
+     */
+    public static function others(): array
+    {
+        $others = [];
+        foreach (static::UNITS as $unit => $site) {
+            if ($unit !== static::$unit) {
+                $others[$site['name']] = $unit === 'bimbel' ? rtrim(config('app.url'), '/').'/' : route($site['route'].'home');
+            }
+        }
+
+        return $others;
+    }
+
     public static function isHome(): bool
     {
         return request()->routeIs(static::UNITS[static::$unit]['route'].'home');
