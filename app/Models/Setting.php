@@ -17,14 +17,21 @@ class Setting extends Model
     protected array $imageFields = ['logo', 'hero_image', 'about_image'];
 
     protected $fillable = [
-        'logo', 'hero_title', 'hero_subtitle', 'hero_tagline', 'hero_image',
+        'unit', 'logo', 'hero_title', 'hero_subtitle', 'hero_tagline', 'hero_image',
         'whatsapp', 'whatsapp_name', 'tiktok_url', 'instagram_url',
         'about_title', 'about_body', 'about_image', 'quote', 'quote_author',
     ];
 
+    /** Pengaturan utama My Rubel: logo, WhatsApp, dan teks website Bimbel. */
     public static function current(): self
     {
-        return static::query()->firstOrCreate([], ['hero_title' => 'Bimbel My Rubel']);
+        return static::for('bimbel');
+    }
+
+    /** Pengaturan per website (unit); logo & WhatsApp tetap diambil dari current(). */
+    public static function for(string $unit): self
+    {
+        return static::query()->firstOrCreate(['unit' => $unit], ['hero_title' => $unit === 'literacy' ? 'My Rubel *Literacy* Center' : 'Bimbel My Rubel']);
     }
 
     protected function whatsapp(): Attribute

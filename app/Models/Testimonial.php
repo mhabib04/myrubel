@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasImages;
+use App\Models\Concerns\HasUnit;
 use App\Models\Concerns\Publishable;
 use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
 {
-    use HasImages, Publishable;
+    use HasImages, HasUnit, Publishable;
 
     protected array $imageFields = ['photo'];
 

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AchievementResource\Pages;
 use App\Filament\Support\Fields;
+use App\Filament\Support\ScopedToUnit;
 use App\Models\Achievement;
 use BackedEnum;
 use Filament\Forms\Components\Select;
@@ -13,9 +14,14 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class AchievementResource extends Resource
 {
+    use ScopedToUnit;
+
+    protected static string $unit = 'bimbel';
+
     protected static ?string $model = Achievement::class;
 
     protected static ?string $slug = 'prestasi';
@@ -28,9 +34,12 @@ class AchievementResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    protected static string|UnitEnum|null $navigationGroup = 'My Rubel';
+
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(2)->components([
+            static::unitField(),
             Fields::image('poster', 'Poster', 'prestasi', '4:5 (1080×1350 px)')->columnSpanFull(),
             TextInput::make('title')->label('Nama lomba & peringkat')->required()->maxLength(255)->columnSpanFull(),
             Select::make('level')->label('Tingkat')->required()->native(false)

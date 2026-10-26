@@ -16,6 +16,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 /**
  * Kelola akun admin. Hanya super admin (Bu Lina, satu-satunya) yang bisa membuka halaman ini.
@@ -34,6 +35,8 @@ class UserResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static ?int $navigationSort = 11;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Akun';
 
     public static function canViewAny(): bool
     {

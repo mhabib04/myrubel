@@ -390,3 +390,41 @@ html { scroll-padding-top: 84px; }
 @media (max-width: 767px) {
   .detail-actions .btn { flex: 1 1 100%; }
 }
+
+/* ================= Menu dropdown (Karya di Literacy Center) ================= */
+.nav-drop { position: relative; }
+.nav-drop-btn { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; cursor: pointer; font-family: inherit; color: hsla(0, 0%, 100%, .78); font-weight: 600; font-size: 15px; padding: 8px 12px; border-radius: 999px; transition: color .2s, background .2s; }
+.nav-drop-btn .icon { width: 16px; height: 16px; transition: transform .2s; }
+.nav-drop-btn:hover { color: #fff; background: hsla(0, 0%, 100%, .08); }
+.nav-drop-btn.active { color: var(--navy-dark); background: var(--yellow); }
+.nav-drop.open .nav-drop-btn .icon { transform: rotate(180deg); }
+.nav-drop-menu { display: none; position: absolute; top: calc(100% + 10px); left: 0; min-width: 180px; padding: 8px; background: var(--navy-dark); border: 1px solid hsla(0, 0%, 100%, .08); border-radius: 14px; box-shadow: 0 16px 30px hsla(227, 70%, 10%, .3); z-index: 60; }
+.nav-drop.open .nav-drop-menu { display: flex; flex-direction: column; gap: 2px; }
+.nav-links .nav-drop-menu a { border-radius: 10px; }
+.nav-links .nav-drop-menu a.current { color: var(--yellow); }
+
+/* ================= Karya Literacy Center ================= */
+.more { text-align: center; margin-top: 28px; }
+.work-author { color: var(--navy); font-weight: 600; font-size: 14px; }
+.work-type { margin-bottom: 10px; }
+.work-actions { margin-top: 24px; }
+.empty-note { color: var(--muted); text-align: center; padding: 32px 0; }
+
+/* ================= Nomor halaman ================= */
+.pager { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+.pager-pages { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.pager-btn, .pager-num { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 40px; height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--navy); font-weight: 700; font-size: 14px; transition: background .2s, color .2s; }
+.pager-btn .icon { width: 16px; height: 16px; }
+a.pager-btn:hover, a.pager-num:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pager-num.current { background: var(--yellow); border-color: var(--yellow); color: var(--navy-dark); }
+.pager-btn.disabled, .pager-num.dots { color: var(--muted); opacity: .6; }
+.pager-num.dots { border: 0; background: none; min-width: 24px; padding: 0; }
+
+@media (max-width: 1080px) {
+  .nav-drop-btn { width: 100%; justify-content: space-between; padding: 12px 16px; border-radius: 12px; }
+  .nav-drop-menu { position: static; min-width: 0; padding: 0 0 4px 16px; border: 0; box-shadow: none; }
+}
+
+@media (max-width: 767px) {
+  .pager-btn { padding: 0 12px; }
+}

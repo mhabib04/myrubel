@@ -1,7 +1,7 @@
 @extends('layouts.app', ['navActive' => 'program'])
 
-@section('title', $program->name.' – Bimbel My Rubel Pasaman Barat')
-@section('description', 'Program belajar dan fasilitas unggulan Bimbel My Rubel Pasaman Barat.')
+@section('title', $program->name.' – '.\App\Support\Site::name().' Pasaman Barat')
+@section('description', 'Program belajar dan fasilitas unggulan '.\App\Support\Site::name().' Pasaman Barat.')
 @section('wa_message', 'Halo My Rubel, saya mau tanya program '.$program->name.'.')
 
 @php
@@ -15,7 +15,7 @@
 @section('content')
 <section>
   <div class="container">
-    <a class="back-link" data-back href="{{ route('home') }}#program"><svg class="icon"><use href="#i-left"/></svg>Kembali ke Program</a>
+    <a class="back-link" data-back href="{{ \App\Support\Site::route('home') }}#program"><svg class="icon"><use href="#i-left"/></svg>Kembali ke Program</a>
     <div class="detail">
       <div>
         <h1 id="p-title">{{ $program->name }}</h1>

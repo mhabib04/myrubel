@@ -5,13 +5,13 @@
   $label = $navActive === 'event' ? 'Event' : 'Info';
 @endphp
 
-@section('title', $item->title.' – Bimbel My Rubel Pasaman Barat')
-@section('description', $item->excerpt(30) ?: 'Event dan informasi terbaru dari Bimbel My Rubel Pasaman Barat.')
+@section('title', $item->title.' – '.\App\Support\Site::name().' Pasaman Barat')
+@section('description', $item->excerpt(30) ?: 'Event dan informasi terbaru dari '.\App\Support\Site::name().' Pasaman Barat.')
 
 @section('content')
 <section>
   <div class="container">
-    <a class="back-link" data-back href="{{ route('home') }}#{{ $navActive }}"><svg class="icon"><use href="#i-left"/></svg>Kembali ke {{ $label }}</a>
+    <a class="back-link" data-back href="{{ \App\Support\Site::route('home') }}#{{ $navActive }}"><svg class="icon"><use href="#i-left"/></svg>Kembali ke {{ $label }}</a>
     {{-- foto mengapung di kanan, isi lengkap mengalir di bawahnya --}}
     <article class="detail detail-article">
       <div class="article-img">

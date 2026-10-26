@@ -1,9 +1,12 @@
-# Bimbel My Rubel – Website Profil
+# My Rubel – Website Profil
 
-Website profil **Bimbel My Rubel (Rumah Belajar), Pasaman Barat**.
+Satu aplikasi untuk beberapa website **My Rubel (Rumah Belajar), Pasaman Barat**:
 
-- **Halaman publik**: beranda (`/`) dan detail program (`/program/{slug}`), dibuat dengan Blade, `resources/css/app.css`, dan `resources/js/app.js` (dari prototipe di `_design/`).
-- **Panel admin**: `/admin` (Filament 5), untuk mengelola Program, Prestasi, Alumni, Kegiatan, Info, Galeri, Cabang, dan Pengaturan (logo, hero, kontak, Tentang).
+- **Bimbel My Rubel** (domain utama, mis. `myrubel.com`): Program, Prestasi, Alumni, Testimoni, Event, Info, Galeri, Tentang, Pengajar, Lokasi.
+- **My Rubel Literacy Center** (subdomain, diatur lewat `LITERACY_DOMAIN` di `.env`, mis. `literacy.myrubel.com`): Program, Prestasi, Karya (Puisi, Cerpen, Essay, Artikel), Event, Testimoni.
+- **Panel admin**: `/admin` (Filament 5) di domain utama, satu panel untuk semua website. Menu dikelompokkan per website; logo, nomor WhatsApp, dan akun admin dipakai bersama.
+
+Di komputer, website Literacy dibuka di `http://literacy.localhost:8000` (nilai bawaan `LITERACY_DOMAIN`).
 
 Stack: Laravel 12, PHP 8.2+, MySQL/MariaDB, Filament 5, Vite.
 

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ActivityResource\Pages;
 use App\Filament\Support\Fields;
+use App\Filament\Support\ScopedToUnit;
 use App\Models\Activity;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
@@ -13,9 +14,14 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ActivityResource extends Resource
 {
+    use ScopedToUnit;
+
+    protected static string $unit = 'bimbel';
+
     protected static ?string $model = Activity::class;
 
     protected static ?string $slug = 'event';
@@ -28,9 +34,12 @@ class ActivityResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    protected static string|UnitEnum|null $navigationGroup = 'My Rubel';
+
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(2)->components([
+            static::unitField(),
             Fields::image('photo', 'Foto', 'kegiatan', '4:5 (1080×1350 px)')->columnSpanFull(),
             TextInput::make('title')->label('Nama event')->required()->maxLength(255)->columnSpanFull(),
             DatePicker::make('date')->label('Tanggal')->native(false)->displayFormat('j F Y')

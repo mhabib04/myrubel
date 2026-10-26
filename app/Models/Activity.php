@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Concerns\HasExcerpt;
 use App\Models\Concerns\HasImages;
+use App\Models\Concerns\HasUnit;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\Publishable;
 use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
-    use HasExcerpt, HasImages, HasSlug, Publishable;
+    use HasExcerpt, HasImages, HasSlug, HasUnit, Publishable;
 
     protected array $imageFields = ['photo'];
 

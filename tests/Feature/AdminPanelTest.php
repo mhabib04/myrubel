@@ -172,6 +172,6 @@ class AdminPanelTest extends TestCase
         $setting = Setting::current();
         $this->assertSame('6281111112222', $setting->whatsapp);
         $this->assertSame('https://www.instagram.com/myrubel', $setting->instagram_url);
-        $this->assertSame(1, Setting::count());
+        $this->assertSame(1, Setting::where('unit', 'bimbel')->count());
     }
 }

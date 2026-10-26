@@ -8,7 +8,7 @@
         <div class="prog-body">
           <h3>{{ $p->name }}</h3>
           <p>{{ $p->short_desc }}</p>
-          <a class="link" href="{{ route('program.show', $p->slug) }}">Lihat Selengkapnya <svg class="icon"><use href="#i-arrow"/></svg></a>
+          <a class="link" href="{{ \App\Support\Site::route('program.show', $p->slug) }}">Lihat Selengkapnya <svg class="icon"><use href="#i-arrow"/></svg></a>
         </div>
       </article>
       @endforeach

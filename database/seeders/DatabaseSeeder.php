@@ -90,5 +90,12 @@ class DatabaseSeeder extends Seeder
             'quote' => '[Kutipan Bu Lina tentang alasan mendirikan My Rubel.]',
             'quote_author' => 'Lina Syariyenti, S.Pd. · Pimpinan Bimbel My Rubel',
         ]);
+
+        // Literacy Center: hanya teks hero & media sosial; logo dan WhatsApp memakai pengaturan My Rubel.
+        Setting::for('literacy')->update([
+            'hero_title' => 'My Rubel *Literacy* Center',
+            'hero_subtitle' => 'Ruang tumbuh literasi siswa Pasaman Barat lewat program, karya, dan event.',
+            'hero_tagline' => 'MEMBACA, *MENULIS,* BERKARYA',
+        ]);
     }
 }

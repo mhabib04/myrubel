@@ -13,6 +13,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class InfoResource extends Resource
 {
@@ -27,6 +28,8 @@ class InfoResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
 
     protected static ?int $navigationSort = 6;
+
+    protected static string|UnitEnum|null $navigationGroup = 'My Rubel';
 
     public static function form(Schema $schema): Schema
     {

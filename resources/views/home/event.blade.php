@@ -18,7 +18,7 @@
             @if ($excerpt = $a->excerpt())
             <p class="event-sum">{{ $excerpt }}</p>
             @endif
-            <a class="link" href="{{ route('event.show', $a->slug) }}">Lihat Selengkapnya <svg class="icon"><use href="#i-arrow"/></svg></a>
+            <a class="link" href="{{ \App\Support\Site::route('event.show', $a->slug) }}">Lihat Selengkapnya <svg class="icon"><use href="#i-arrow"/></svg></a>
           </div>
         </article>
         @endforeach

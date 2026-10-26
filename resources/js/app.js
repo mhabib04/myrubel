@@ -17,6 +17,8 @@ const ICONS = {
   clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>',
+  down: '<path d="m6 9 6 6 6-6"/>',
+  pen: '<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>',
   pin: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
   ig: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
   tiktok: '<path d="M16 3c.4 2.4 1.9 3.9 4 4.1v3.1a7 7 0 0 1-4-1.3v6.4a5.7 5.7 0 1 1-5.7-5.7h.4v3.2a2.6 2.6 0 1 0 2.2 2.5V3Z"/>',
@@ -96,13 +98,36 @@ if (burger && navLinks) {
     burger.setAttribute("aria-expanded", false);
   }));
 }
-const anchors = [...document.querySelectorAll('.nav-links a[href^="#"]')];
-if (anchors.length) {
-  const sections = anchors.map((a) => document.querySelector(a.getAttribute("href")));
+// ===== Menu dropdown (Karya): buka/tutup dengan klik, tutup saat klik di luar =====
+const closeDrops = () => document.querySelectorAll(".nav-drop.open").forEach((drop) => {
+  drop.classList.remove("open");
+  drop.querySelector(".nav-drop-btn").setAttribute("aria-expanded", false);
+});
+document.querySelectorAll(".nav-drop").forEach((drop) => {
+  const btn = drop.querySelector(".nav-drop-btn");
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = !drop.classList.contains("open");
+    closeDrops();
+    drop.classList.toggle("open", open);
+    btn.setAttribute("aria-expanded", open);
+  });
+});
+document.addEventListener("click", closeDrops);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrops(); });
+
+// pasangan [section, item menu]; section karya (data-nav="karya") menyalakan tombol dropdown Karya
+const navItems = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+const dropBtn = document.querySelector(".nav-drop-btn");
+const spy = [
+  ...navItems.map((a) => [document.querySelector(a.getAttribute("href")), a]),
+  ...(dropBtn ? [...document.querySelectorAll('[data-nav="karya"]')].map((s) => [s, dropBtn]) : []),
+].filter(([section]) => section).sort((a, b) => a[0].offsetTop - b[0].offsetTop);
+if (navItems.length) {
   const onScroll = () => {
-    let i = 0;
-    sections.forEach((s, k) => { if (s && scrollY >= s.offsetTop - 120) i = k; });
-    anchors.forEach((a, k) => a.classList.toggle("active", k === i));
+    let current = spy[0]?.[1];
+    spy.forEach(([section, item]) => { if (scrollY >= section.offsetTop - 120) current = item; });
+    [...navItems, dropBtn].filter(Boolean).forEach((item) => item.classList.toggle("active", item === current));
   };
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();

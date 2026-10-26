@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProgramResource\Pages;
 use App\Filament\Support\Fields;
+use App\Filament\Support\ScopedToUnit;
 use App\Models\Program;
 use BackedEnum;
 use Filament\Forms\Components\Repeater;
@@ -14,9 +15,14 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ProgramResource extends Resource
 {
+    use ScopedToUnit;
+
+    protected static string $unit = 'bimbel';
+
     protected static ?string $model = Program::class;
 
     protected static ?string $slug = 'program';
@@ -29,9 +35,12 @@ class ProgramResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static string|UnitEnum|null $navigationGroup = 'My Rubel';
+
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
+            static::unitField(),
             Section::make('Kartu di beranda')->columns(2)->schema([
                 TextInput::make('name')->label('Nama program')->required()->maxLength(255)->columnSpanFull()
                     ->helperText('Juga menjadi judul halaman detail.'),

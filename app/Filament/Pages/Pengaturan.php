@@ -6,8 +6,8 @@ use App\Filament\Support\Fields;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use UnitEnum;
 
 /**
  * Satu halaman untuk teks hero, kontak, media sosial, dan bagian Tentang.
@@ -28,9 +29,11 @@ class Pengaturan extends Page
 
     protected static ?string $navigationLabel = 'Pengaturan';
 
-    protected static ?string $title = 'Pengaturan';
+    protected static ?string $title = 'Pengaturan My Rubel';
 
     protected static ?int $navigationSort = 10;
+
+    protected static string|UnitEnum|null $navigationGroup = 'My Rubel';
 
     /** @var array<string, mixed> | null */
     public ?array $data = [];
