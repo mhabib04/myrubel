@@ -7,7 +7,7 @@
 @endphp
 <header class="header">
   <div class="container">
-    <a href="{{ Site::route('home') }}" class="wordmark">@if ($logo = $setting->imageUrl('logo'))<img src="{{ $logo }}" alt="Logo My Rubel">@else<span class="mark">MR</span>@endif<span>{{ $brandTop }}<small>{{ $brandBottom }}</small></span></a>
+    <a href="{{ Site::route('home') }}" class="wordmark">@if ($logo = $setting->imageUrl('logo'))<img src="{{ $logo }}" alt="Logo My Rubel">@else<span class="mark">MR</span>@endif<span>{{ $brandTop }}<small{!! mb_strlen($brandBottom) > 20 ? ' class="long"' : '' !!}>{{ $brandBottom }}</small></span></a>
     <nav class="nav-links" id="nav-links">
       @foreach ($menu as $id => $label)
         @if ($id === 'karya')

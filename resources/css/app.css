@@ -247,6 +247,8 @@ html { scroll-padding-top: 84px; }
   .hero-img img { aspect-ratio: 4 / 5; }
 }
 .wordmark img { width: 46px; height: 46px; object-fit: contain; border-radius: 12px; flex-shrink: 0; }
+/* nama website panjang (mis. Motivation & Outbound Center) tetap satu baris di HP */
+@media (max-width: 480px) { .wordmark small.long { font-size: 11px; letter-spacing: .02em; } }
 
 /* ================= Sub judul section ================= */
 .sec-sub { margin-top: 12px; color: var(--muted); font-size: 16px; max-width: 560px; }

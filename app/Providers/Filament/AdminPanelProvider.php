@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->profile(EditProfile::class, isSimple: false)
             ->brandName('My Rubel')
-            ->navigationGroups(['My Rubel', 'Literacy Center', 'Akun'])
+            ->navigationGroups(['My Rubel', 'Literacy Center', 'Motivation & Outbound', 'Akun'])
             ->favicon(fn () => Setting::current()->imageUrl('logo'))
             ->colors([
                 'primary' => Color::hex('#1a2f75'),

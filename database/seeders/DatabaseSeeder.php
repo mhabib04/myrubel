@@ -91,11 +91,17 @@ class DatabaseSeeder extends Seeder
             'quote_author' => 'Lina Syariyenti, S.Pd. · Pimpinan Bimbel My Rubel',
         ]);
 
-        // Literacy Center: hanya teks hero & media sosial; logo dan WhatsApp memakai pengaturan My Rubel.
+        // Literacy Center & Motivation: hanya teks hero & media sosial; logo dan WhatsApp memakai pengaturan My Rubel.
         Setting::for('literacy')->update([
             'hero_title' => 'My Rubel *Literacy* Center',
             'hero_subtitle' => 'Ruang tumbuh literasi siswa Pasaman Barat lewat program, karya, dan event.',
             'hero_tagline' => 'MEMBACA, *MENULIS,* BERKARYA',
+        ]);
+
+        Setting::for('motivation')->update([
+            'hero_title' => 'My Rubel *Motivation* & Outbound Center',
+            'hero_subtitle' => 'Pelatihan motivasi dan kegiatan outbound untuk siswa, sekolah, dan instansi di Pasaman Barat.',
+            'hero_tagline' => 'BERANI, *KOMPAK,* BERPRESTASI',
         ]);
     }
 }

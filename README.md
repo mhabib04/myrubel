@@ -4,9 +4,10 @@ Satu aplikasi untuk beberapa website **My Rubel (Rumah Belajar), Pasaman Barat**
 
 - **Bimbel My Rubel** (domain utama, mis. `myrubel.com`): Program, Prestasi, Alumni, Testimoni, Event, Info, Galeri, Tentang, Pengajar, Lokasi.
 - **My Rubel Literacy Center** (subdomain, diatur lewat `LITERACY_DOMAIN` di `.env`, mis. `literacy.myrubel.com`): Program, Prestasi, Karya (Puisi, Cerpen, Essay, Artikel), Event, Testimoni.
+- **My Rubel Motivation & Outbound Center** (subdomain, diatur lewat `MOTIVATION_DOMAIN`, mis. `motivation.myrubel.com`): Program, Event, Testimoni.
 - **Panel admin**: `/admin` (Filament 5) di domain utama, satu panel untuk semua website. Menu dikelompokkan per website; logo, nomor WhatsApp, dan akun admin dipakai bersama.
 
-Di komputer, website Literacy dibuka di `http://literacy.localhost:8000` (nilai bawaan `LITERACY_DOMAIN`).
+Di komputer, website Literacy dibuka di `http://literacy.localhost:8000` dan Motivation di `http://motivation.localhost:8000` (nilai bawaan `LITERACY_DOMAIN` dan `MOTIVATION_DOMAIN`).
 
 Stack: Laravel 12, PHP 8.2+, MySQL/MariaDB, Filament 5, Vite.
 

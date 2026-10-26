@@ -5,7 +5,7 @@ namespace App\Models\Concerns;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Data milik salah satu website (unit): 'bimbel' (My Rubel) atau 'literacy' (Literacy Center).
+ * Data milik salah satu website (unit): 'bimbel' (My Rubel), 'literacy' (Literacy Center), atau 'motivation' (Motivation & Outbound Center).
  */
 trait HasUnit
 {

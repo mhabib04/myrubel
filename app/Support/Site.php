@@ -18,7 +18,7 @@ use Illuminate\Support\HtmlString;
 
 /**
  * Website (unit) yang sedang dibuka beserta susunan section & menunya, dan format teks sorotan.
- * Satu aplikasi melayani beberapa website: 'bimbel' (myrubel.com) dan 'literacy' (subdomain).
+ * Satu aplikasi melayani beberapa website: 'bimbel' (myrubel.com), 'literacy' dan 'motivation' (subdomain).
  */
 class Site
 {
@@ -26,6 +26,7 @@ class Site
     public const UNITS = [
         'bimbel' => ['name' => 'Bimbel My Rubel', 'brand' => ['Bimbel', 'My Rubel'], 'route' => ''],
         'literacy' => ['name' => 'My Rubel Literacy Center', 'brand' => ['My Rubel', 'Literacy Center'], 'route' => 'literacy.'],
+        'motivation' => ['name' => 'My Rubel Motivation & Outbound Center', 'brand' => ['My Rubel', 'Motivation & Outbound Center'], 'route' => 'motivation.'],
     ];
 
     /** Urutan section beranda setelah hero. Section bernilai null selalu tampil. */
@@ -53,6 +54,11 @@ class Site
             'event' => Activity::class,
             'testimoni' => Testimonial::class,
         ],
+        'motivation' => [
+            'program' => Program::class,
+            'event' => Activity::class,
+            'testimoni' => Testimonial::class,
+        ],
     ];
 
     /** Menu atas. 'karya' di Literacy berupa dropdown ke halaman daftar tiap jenis karya. */
@@ -64,6 +70,9 @@ class Site
         'literacy' => [
             'beranda' => 'Beranda', 'program' => 'Program', 'prestasi' => 'Prestasi', 'karya' => 'Karya',
             'event' => 'Event', 'testimoni' => 'Testimoni',
+        ],
+        'motivation' => [
+            'beranda' => 'Beranda', 'program' => 'Program', 'event' => 'Event', 'testimoni' => 'Testimoni',
         ],
     ];
 

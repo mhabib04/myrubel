@@ -31,7 +31,11 @@ class Setting extends Model
     /** Pengaturan per website (unit); logo & WhatsApp tetap diambil dari current(). */
     public static function for(string $unit): self
     {
-        return static::query()->firstOrCreate(['unit' => $unit], ['hero_title' => $unit === 'literacy' ? 'My Rubel *Literacy* Center' : 'Bimbel My Rubel']);
+        return static::query()->firstOrCreate(['unit' => $unit], ['hero_title' => match ($unit) {
+            'literacy' => 'My Rubel *Literacy* Center',
+            'motivation' => 'My Rubel *Motivation* & Outbound Center',
+            default => 'Bimbel My Rubel',
+        }]);
     }
 
     protected function whatsapp(): Attribute
