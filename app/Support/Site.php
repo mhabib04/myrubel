@@ -84,6 +84,22 @@ class Site
         static::$unit = $unit;
     }
 
+    /** Unit dari alamat yang dibuka; dipakai halaman error yang tidak melewati controller. */
+    public static function fromHost(string $host): string
+    {
+        return match ($host) {
+            config('sites.literacy_domain') => 'literacy',
+            config('sites.motivation_domain') => 'motivation',
+            default => 'bimbel',
+        };
+    }
+
+    /** URL beranda sebuah website. Website utama memakai APP_URL karena bisa berada di subfolder. */
+    public static function homeUrl(string $unit): string
+    {
+        return $unit === 'bimbel' ? rtrim(config('app.url'), '/').'/' : route(static::UNITS[$unit]['route'].'home');
+    }
+
     public static function unit(): string
     {
         return static::$unit;
@@ -117,7 +133,7 @@ class Site
         $others = [];
         foreach (static::UNITS as $unit => $site) {
             if ($unit !== static::$unit) {
-                $others[$site['name']] = $unit === 'bimbel' ? rtrim(config('app.url'), '/').'/' : route($site['route'].'home');
+                $others[$site['name']] = static::homeUrl($unit);
             }
         }
 
