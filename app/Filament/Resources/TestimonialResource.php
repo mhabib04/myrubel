@@ -38,14 +38,16 @@ class TestimonialResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        $labels = Testimonial::LABELS[static::$unit];
+
         return $schema->columns(2)->components([
             static::unitField(),
             Fields::image('photo', 'Foto', 'testimoni', '4:5 (1080×1350 px)')->columnSpanFull(),
             TextInput::make('name')->label('Nama')->required()->maxLength(255),
-            TextInput::make('year')->label('Tahun lulus')->numeric()->minValue(2000)->maxValue(2100)
+            TextInput::make('year')->label($labels['year'])->numeric()->minValue(2000)->maxValue(2100)
                 ->helperText('Urutan tampil mengikuti tahun terbaru.'),
-            TextInput::make('graduated_to')->label('Lulus di')->maxLength(255)->columnSpanFull()
-                ->helperText('Kampus atau sekolah tujuan setelah lulus.'),
+            TextInput::make('graduated_to')->label($labels['graduated_to'])->maxLength(255)->columnSpanFull()
+                ->helperText($labels['graduated_to_help']),
             Textarea::make('quote')->label('Testimoni')->required()->rows(4)->maxLength(500)->columnSpanFull()
                 ->helperText('Maks. 500 karakter.'),
             Fields::published(),
@@ -54,11 +56,13 @@ class TestimonialResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $labels = Testimonial::LABELS[static::$unit];
+
         return Fields::table($table, [
             Fields::imageColumn('photo', 'Foto'),
             TextColumn::make('name')->label('Nama')->searchable(),
-            TextColumn::make('year')->label('Tahun lulus'),
-            TextColumn::make('graduated_to')->label('Lulus di')->wrap(),
+            TextColumn::make('year')->label($labels['year']),
+            TextColumn::make('graduated_to')->label($labels['graduated_to'])->wrap(),
             TextColumn::make('quote')->label('Testimoni')->limit(60)->wrap(),
         ], 'year');
     }

@@ -9,6 +9,7 @@ use App\Filament\Resources\WorkResource\Pages\CreateWork;
 use App\Models\Achievement;
 use App\Models\Program;
 use App\Models\Setting;
+use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\Work;
 use Database\Seeders\DatabaseSeeder;
@@ -153,6 +154,25 @@ class LiteracyTest extends TestCase
         foreach (['literacy/program', 'literacy/prestasi', 'literacy/karya', 'literacy/event', 'literacy/testimoni', 'literacy/pengaturan'] as $path) {
             $this->get("/admin/$path")->assertOk();
         }
+    }
+
+    public function test_label_program_dan_testimoni_tanpa_istilah_bimbel(): void
+    {
+        $this->actingAs(User::first());
+
+        $this->get('/admin/literacy/program/create')->assertOk()
+            ->assertSee('Materi')->assertSee('Keunggulan program')
+            ->assertDontSee('Mata pelajaran')->assertDontSee('Fasilitas unggulan');
+        Livewire::test(CreateLiteracyProgram::class)->assertFormSet(['price_unit' => 'bulan']);
+        $this->get('/admin/literacy/testimoni/create')->assertOk()
+            ->assertSee('Keterangan')->assertDontSee('Tahun lulus')->assertDontSee('Lulus di');
+        $this->get('/admin/program/create')->assertOk()->assertSee('Mata pelajaran')->assertSee('Fasilitas unggulan');
+
+        $program = Program::create(['unit' => 'literacy', 'name' => 'Klub Membaca', 'short_desc' => 'Membaca.', 'subjects' => 'Resensi']);
+        Testimonial::create(['unit' => 'literacy', 'name' => 'Rani', 'year' => 2026, 'quote' => 'Jadi suka menulis.']);
+
+        $this->get("$this->base/program/{$program->slug}")->assertSee('Materi: <small>Resensi</small>', false);
+        $this->get("$this->base/")->assertSee('Peserta 2026')->assertDontSee('Alumni 2026');
     }
 
     public function test_prestasi_bimbel_tidak_tampil_di_literacy(): void

@@ -7,7 +7,7 @@
 @php
   $items = array_filter([
       $program->schedule ? e($program->schedule) : null,
-      $program->subjects ? 'Mata pelajaran: <small>'.e($program->subjects).'</small>' : null,
+      $program->subjects ? e(\App\Models\Program::LABELS[\App\Support\Site::unit()]['subjects']).': <small>'.e($program->subjects).'</small>' : null,
       ...array_map('e', $program->features ?? []),
   ]);
 @endphp

@@ -12,7 +12,7 @@
             <div class="testi-photo">@include('partials.img', ['src' => $t->imageUrl('photo'), 'alt' => $t->name, 'ph' => 'FOTO'])</div>
             <div class="testi-who">
               <b>{{ $t->name }}</b>
-              <span class="cap-tag">Alumni {{ $t->year ?: '[Tahun]' }}</span>
+              <span class="cap-tag">{{ \App\Models\Testimonial::LABELS[\App\Support\Site::unit()]['tag'] }} {{ $t->year ?: '[Tahun]' }}</span>
               @if ($t->graduated_to)
               <small>{{ $t->graduated_to }}</small>
               @endif

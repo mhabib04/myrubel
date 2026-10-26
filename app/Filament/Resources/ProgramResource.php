@@ -39,6 +39,8 @@ class ProgramResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        $labels = Program::LABELS[static::$unit];
+
         return $schema->components([
             static::unitField(),
             Section::make('Kartu di beranda')->columns(2)->schema([
@@ -50,11 +52,11 @@ class ProgramResource extends Resource
             ]),
             Section::make('Halaman detail')->columns(2)->schema([
                 TextInput::make('schedule')->label('Jadwal')->maxLength(255),
-                TextInput::make('subjects')->label('Mata pelajaran')->maxLength(255),
+                TextInput::make('subjects')->label($labels['subjects'])->maxLength(255),
                 TextInput::make('price')->label('Harga')->numeric()->minValue(0)->prefix('Rp')
                     ->helperText('Tanpa titik. Kosongkan jika belum ditentukan.'),
-                TextInput::make('price_unit')->label('Satuan harga')->required()->default('semester')->prefix('/'),
-                Repeater::make('features')->label('Fasilitas unggulan')
+                TextInput::make('price_unit')->label('Satuan harga')->required()->default($labels['price_unit'])->prefix('/'),
+                Repeater::make('features')->label($labels['features'])
                     ->simple(TextInput::make('item')->required()->maxLength(255))
                     ->addActionLabel('Tambah poin')
                     ->helperText('Tampil sebagai daftar poin di halaman detail.')

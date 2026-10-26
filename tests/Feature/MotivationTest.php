@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Filament\Pages\PengaturanMotivation;
 use App\Filament\Resources\MotivationActivityResource\Pages\CreateActivity as CreateMotivationActivity;
+use App\Filament\Resources\MotivationProgramResource\Pages\CreateProgram as CreateMotivationProgram;
 use App\Filament\Resources\MotivationProgramResource\Pages\ListPrograms as ListMotivationPrograms;
 use App\Models\Activity;
 use App\Models\Program;
@@ -91,6 +92,25 @@ class MotivationTest extends TestCase
         }
 
         $this->assertStringContainsString('My Rubel Motivation &amp; Outbound Center</a>', $this->get("$this->main/")->getContent());
+    }
+
+    public function test_label_program_dan_testimoni_tanpa_istilah_bimbel(): void
+    {
+        $this->actingAs(User::first());
+
+        $this->get('/admin/motivation/program/create')->assertOk()
+            ->assertSee('Materi kegiatan')->assertSee('Keunggulan program')
+            ->assertDontSee('Mata pelajaran')->assertDontSee('Fasilitas unggulan');
+        Livewire::test(CreateMotivationProgram::class)->assertFormSet(['price_unit' => 'peserta']);
+        $this->get('/admin/motivation/testimoni/create')->assertOk()
+            ->assertSee('Keterangan')->assertDontSee('Tahun lulus')->assertDontSee('Lulus di');
+        $this->get('/admin/testimoni/create')->assertOk()->assertSee('Tahun lulus')->assertSee('Lulus di');
+
+        $program = Program::create(['unit' => 'motivation', 'name' => 'Outbound Sekolah', 'short_desc' => 'Outbound.', 'subjects' => 'Team building']);
+        Testimonial::create(['unit' => 'motivation', 'name' => 'Pak Andi', 'year' => 2026, 'quote' => 'Anak-anak jadi lebih kompak.']);
+
+        $this->get("$this->base/program/{$program->slug}")->assertSee('Materi kegiatan: <small>Team building</small>', false);
+        $this->get("$this->base/")->assertSee('Peserta 2026')->assertDontSee('Alumni 2026');
     }
 
     public function test_admin_motivation_menyimpan_data_ke_unit_motivation(): void

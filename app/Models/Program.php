@@ -12,6 +12,13 @@ class Program extends Model
 {
     use HasImages, HasSlug, HasUnit, Publishable;
 
+    /** Label isian yang berbeda per website, dipakai di admin dan halaman detail. */
+    public const LABELS = [
+        'bimbel' => ['subjects' => 'Mata pelajaran', 'features' => 'Fasilitas unggulan', 'price_unit' => 'semester'],
+        'literacy' => ['subjects' => 'Materi', 'features' => 'Keunggulan program', 'price_unit' => 'bulan'],
+        'motivation' => ['subjects' => 'Materi kegiatan', 'features' => 'Keunggulan program', 'price_unit' => 'peserta'],
+    ];
+
     protected string $slugSource = 'name';
 
     protected array $imageFields = ['image'];
