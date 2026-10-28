@@ -100,6 +100,12 @@ class Site
         return $unit === 'bimbel' ? rtrim(config('app.url'), '/').'/' : route(static::UNITS[$unit]['route'].'home');
     }
 
+    /** URL lengkap dengan domain untuk gambar /storage/… (dibutuhkan preview link & data terstruktur). */
+    public static function absolute(?string $url): ?string
+    {
+        return $url && str_starts_with($url, '/') ? request()->getSchemeAndHttpHost().$url : $url;
+    }
+
     public static function unit(): string
     {
         return static::$unit;

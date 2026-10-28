@@ -26,6 +26,12 @@ class Fields
             ->image()
             // tanpa SVG: file SVG bisa berisi skrip yang ikut berjalan saat dibuka dari website
             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+            // diperkecil di browser sebelum diunggah (sisi terpanjang maks. 1920 px), agar website ringan
+            // dan preview WhatsApp tidak gagal karena file terlalu besar
+            ->imageResizeMode('contain')
+            ->imageResizeTargetWidth('1920')
+            ->imageResizeTargetHeight('1920')
+            ->imageResizeUpscale(false)
             ->disk('public')
             ->directory($directory)
             ->visibility('public')

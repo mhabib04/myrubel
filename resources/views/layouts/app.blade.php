@@ -10,18 +10,24 @@
   <link rel="apple-touch-icon" href="{{ $logo }}">
   @endif
   @php
+    // alamat resmi halaman ini (tanpa query, kecuali nomor halaman daftar karya)
+    $canonical = url()->current().(request()->integer('page') > 1 ? '?page='.request()->integer('page') : '');
     // preview saat link dibagikan (WhatsApp, Facebook, dll.): halaman detail mengirim $shareImage,
-    // halaman lain memakai gambar hero. URL gambar harus lengkap dengan domain.
-    $ogImage = ($shareImage ?? null) ?: ($siteSetting->imageUrl('hero_image') ?: $logo);
+    // halaman lain memakai gambar hero.
+    $ogImage = \App\Support\Site::absolute(($shareImage ?? null) ?: ($siteSetting->imageUrl('hero_image') ?: $logo));
   @endphp
+  <link rel="canonical" href="{{ $canonical }}">
   <meta property="og:type" content="{{ isset($shareImage) ? 'article' : 'website' }}">
   <meta property="og:site_name" content="{{ \App\Support\Site::name() }}">
   <meta property="og:title" content="@yield('title')">
   <meta property="og:description" content="@yield('description')">
-  <meta property="og:url" content="{{ url()->current() }}">
+  <meta property="og:url" content="{{ $canonical }}">
   @if ($ogImage)
-  <meta property="og:image" content="{{ str_starts_with($ogImage, '/') ? request()->getSchemeAndHttpHost().$ogImage : $ogImage }}">
+  <meta property="og:image" content="{{ $ogImage }}">
   <meta name="twitter:card" content="summary_large_image">
+  @endif
+  @if (\App\Support\Site::isHome())
+  @include('partials.schema')
   @endif
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
