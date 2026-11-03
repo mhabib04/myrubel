@@ -2,7 +2,11 @@
 @use('App\Support\Site')
 @extends('layouts.app', ['navActive' => 'karya', 'workType' => $work->type, 'shareImage' => $work->imageUrl('poster') ?: $logo])
 
-@section('title', $work->title.' – My Rubel Literacy Center Pasaman Barat')
+@php
+  // judul untuk tab, preview link (WhatsApp, dll.), dan tombol Bagikan: "Judul oleh Penulis"
+  $shareTitle = $work->author ? $work->title.' oleh '.$work->author : $work->title;
+@endphp
+@section('title', $shareTitle.' – My Rubel Literacy Center Pasaman Barat')
 @section('description', $work->excerpt(30) ?: $work->typeLabel().' karya siswa My Rubel Literacy Center.')
 
 @section('content')
@@ -43,7 +47,7 @@
           </div>
         </div>
         @endif
-        @include('partials.share', ['shareTitle' => $work->title])
+        @include('partials.share', ['shareTitle' => $shareTitle])
       </footer>
     </article>
   </div>

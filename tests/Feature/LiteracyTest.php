@@ -103,7 +103,9 @@ class LiteracyTest extends TestCase
 
         $this->get("$this->base/karya/cerpen/{$work->slug}")
             ->assertOk()
-            ->assertSee('<title>Senja di Simpang Empat – My Rubel Literacy Center Pasaman Barat</title>', false)
+            ->assertSee('<title>Senja di Simpang Empat oleh Aisyah Nur – My Rubel Literacy Center Pasaman Barat</title>', false)
+            ->assertSee('<meta property="og:title" content="Senja di Simpang Empat oleh Aisyah Nur – My Rubel Literacy Center Pasaman Barat">', false)
+            ->assertSee('data-share-title="Senja di Simpang Empat oleh Aisyah Nur"', false)
             ->assertSee('Cerpen')
             ->assertSee('Karya oleh Aisyah Nur')
             ->assertSee('14 Maret 2026')
