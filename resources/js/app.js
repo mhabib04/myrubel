@@ -134,21 +134,27 @@ if (navItems.length) {
 }
 
 // ===== Carousel « » =====
-// Slide berjalan otomatis tiap 4 detik, berhenti saat disentuh/diarahkan kursor.
-const AUTOPLAY_MS = 4000;
+// Slide berjalan otomatis tiap 3 detik, berhenti saat disentuh/diarahkan kursor.
+// Bisa digeser dengan jari (HP) maupun ditarik dengan kursor (komputer).
+const AUTOPLAY_MS = 3000;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.querySelectorAll(".carousel").forEach((c) => {
   const track = c.querySelector(".track");
-  const bar = c.parentElement.querySelector(".bar span");
+  const barWrap = c.parentElement.querySelector(".bar");
+  const bar = barWrap?.querySelector("span");
+  const maxScroll = () => track.scrollWidth - track.clientWidth;
+  const scrollable = () => maxScroll() > 4;
 
   // geser satu slide; di ujung kembali ke awal
-  const step = (dir) => {
+  const slideWidth = () => {
     const slide = track.firstElementChild;
-    if (!slide) return;
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    const width = slide.getBoundingClientRect().width + gap;
-    const max = track.scrollWidth - track.clientWidth;
+    return slide ? slide.getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 0) : 0;
+  };
+  const step = (dir) => {
+    const width = slideWidth();
+    if (!width || !scrollable()) return;
+    const max = maxScroll();
     if (dir > 0 && track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: "smooth" });
     else if (dir < 0 && track.scrollLeft <= 4) track.scrollTo({ left: max, behavior: "smooth" });
     else track.scrollBy({ left: dir * width, behavior: "smooth" });
@@ -156,27 +162,71 @@ document.querySelectorAll(".carousel").forEach((c) => {
 
   let timer = null;
   let visible = false;
+  let hovering = false;
   const stop = () => { clearInterval(timer); timer = null; };
   const start = () => {
     stop();
-    if (!reduceMotion && visible) timer = setInterval(() => step(1), AUTOPLAY_MS);
+    if (!reduceMotion && visible && !hovering && scrollable()) timer = setInterval(() => step(1), AUTOPLAY_MS);
   };
 
   c.querySelectorAll(".arrow").forEach((b) => b.addEventListener("click", () => {
     step(Number(b.dataset.dir));
     start(); // mulai ulang hitungan setelah diklik
   }));
-  c.addEventListener("mouseenter", stop);
-  c.addEventListener("mouseleave", start);
+  c.addEventListener("mouseenter", () => { hovering = true; stop(); });
+  c.addEventListener("mouseleave", () => { hovering = false; start(); });
   track.addEventListener("touchstart", stop, { passive: true });
   track.addEventListener("touchend", () => setTimeout(start, AUTOPLAY_MS), { passive: true });
 
+  // tarik dengan kursor: snap dimatikan selama ditarik, lalu berhenti di slide terdekat
+  let drag = null;
+  let justDragged = false;
+  track.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse" || e.button !== 0 || !scrollable()) return;
+    drag = { x: e.clientX, left: track.scrollLeft, dx: 0, moved: false };
+  });
+  addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < 5) return;
+    if (!drag.moved) { drag.moved = true; track.classList.add("dragging"); }
+    drag.dx = dx;
+    track.scrollLeft = drag.left - dx;
+  });
+  addEventListener("pointerup", () => {
+    if (!drag) return;
+    const { moved, left, dx } = drag;
+    drag = null;
+    if (!moved) return;
+    // berhenti di slide terdekat; tarikan > 50px selalu pindah minimal satu slide
+    const width = slideWidth();
+    const from = Math.round(left / width);
+    let to = Math.round(track.scrollLeft / width);
+    if (to === from && Math.abs(dx) > 50) to = from + (dx < 0 ? 1 : -1);
+    const target = Math.min(Math.max(to * width, 0), maxScroll());
+    track.classList.remove("dragging");
+    track.scrollTo({ left: target, behavior: "smooth" });
+    justDragged = true; // klik yang menyusul lepasnya tombol mouse tidak membuka link
+    setTimeout(() => { justDragged = false; }, 0);
+  });
+  track.addEventListener("click", (e) => {
+    if (justDragged) { e.preventDefault(); e.stopPropagation(); }
+  }, { capture: true });
+  track.addEventListener("dragstart", (e) => e.preventDefault()); // gambar tidak ikut terseret
+
+  // garis bawah & tombol « » hanya tampil bila slide memang bisa digeser
+  const update = () => {
+    const can = scrollable();
+    c.classList.toggle("static", !can);
+    barWrap?.classList.toggle("hidden", !can);
+    if (bar && can) bar.style.transform = `translateX(${(track.scrollLeft / maxScroll()) * 200}%)`;
+    can ? start() : stop();
+  };
+  track.addEventListener("scroll", () => {
+    if (bar && scrollable()) bar.style.transform = `translateX(${(track.scrollLeft / maxScroll()) * 200}%)`;
+  }, { passive: true });
+  new ResizeObserver(update).observe(track);
+
   // hanya berjalan saat carousel terlihat di layar
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? start() : stop(); }, { threshold: 0.3 }).observe(c);
-  if (bar) {
-    track.addEventListener("scroll", () => {
-      const max = track.scrollWidth - track.clientWidth;
-      bar.style.transform = `translateX(${max ? (track.scrollLeft / max) * 200 : 0}%)`;
-    }, { passive: true });
-  }
 });

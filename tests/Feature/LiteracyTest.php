@@ -98,6 +98,7 @@ class LiteracyTest extends TestCase
     public function test_detail_karya(): void
     {
         $work = Work::create(['type' => 'cerpen', 'title' => 'Senja di Simpang Empat', 'author' => 'Aisyah Nur', 'date' => '2026-03-14',
+            'author_birthplace' => 'Kinali', 'author_birthdate' => '2011-08-17', 'author_school' => 'SMP Negeri 2 Pasaman Barat',
             'poster' => 'karya/senja.jpg', 'content' => '<p>Sore itu langit <strong>jingga</strong>.</p>']);
 
         $this->get("$this->base/karya/cerpen/{$work->slug}")
@@ -109,7 +110,10 @@ class LiteracyTest extends TestCase
             ->assertSee('<strong>jingga</strong>', false)
             ->assertSee('data-share', false)
             ->assertSee('<meta property="og:image" content="http://literacy.test/storage/karya/senja.jpg">', false)
-            ->assertSee('Kembali ke Cerpen');
+            ->assertSee('Kembali ke Cerpen')
+            ->assertSeeInOrder(['work-type', 'Senja di Simpang Empat', 'work-poster', 'Karya oleh Aisyah Nur', 'jingga', 'author-card', 'data-share'], false)
+            ->assertSee('Kinali, 17 Agustus 2011')
+            ->assertSee('SMP Negeri 2 Pasaman Barat');
 
         $this->get("$this->base/karya/puisi/{$work->slug}")->assertNotFound(); // jenis harus cocok
     }

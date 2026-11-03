@@ -11,6 +11,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -48,12 +49,20 @@ class WorkResource extends Resource
             DatePicker::make('date')->label('Tanggal')->native(false)->displayFormat('j F Y')
                 ->helperText('Urutan tampil mengikuti tanggal terbaru.'),
             TextInput::make('title')->label('Judul')->required()->maxLength(255)->columnSpanFull(),
-            TextInput::make('author')->label('Penulis')->maxLength(255)->columnSpanFull()
-                ->helperText('Tampil sebagai "Karya oleh ...".'),
-            Fields::image('poster', 'Poster', 'karya', '4:5 (1080×1350 px)')->columnSpanFull(),
+            Fields::image('poster', 'Poster', 'karya', '16:9 (1600×900 px)')->columnSpanFull(),
             RichEditor::make('content')->label('Isi karya')->columnSpanFull()
                 ->toolbarButtons([['bold', 'italic', 'underline', 'link'], ['h2', 'h3', 'bulletList', 'orderedList', 'blockquote'], ['undo', 'redo']])
                 ->helperText('Beberapa kata pertama tampil sebagai ringkasan di daftar karya.'),
+            Section::make('Profil penulis')->columns(2)->columnSpanFull()
+                ->description('Tampil sebagai kartu di bawah isi karya.')
+                ->schema([
+                    TextInput::make('author')->label('Nama penulis')->maxLength(255)->columnSpanFull()
+                        ->helperText('Tampil sebagai "Karya oleh ...".'),
+                    TextInput::make('author_birthplace')->label('Tempat lahir')->maxLength(255),
+                    DatePicker::make('author_birthdate')->label('Tanggal lahir')->native(false)->displayFormat('j F Y'),
+                    TextInput::make('author_school')->label('Asal sekolah')->maxLength(255)->columnSpanFull(),
+                    Fields::image('author_photo', 'Foto penulis', 'karya/penulis', '4:5 (800×1000 px)')->columnSpanFull(),
+                ]),
             Fields::published(),
         ]);
     }

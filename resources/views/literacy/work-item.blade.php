@@ -1,6 +1,6 @@
 {{-- Satu baris karya (bentuk sama seperti daftar Info). $work --}}
 @use('App\Support\Site')
-<article class="info-item">
+<article class="info-item work-item">
   <div class="info-thumb">@include('partials.img', ['src' => $work->imageUrl('poster'), 'alt' => $work->title, 'ph' => 'POSTER'])</div>
   <div class="info-body">
     <span class="info-date"><svg class="icon"><use href="#i-calendar"/></svg>{{ Site::tanggal($work->date) }}</span>

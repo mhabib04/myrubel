@@ -21,19 +21,27 @@ class Work extends Model
         'artikel' => ['Artikel', 'Artikel tulisan siswa My Rubel Literacy Center.'],
     ];
 
-    protected array $imageFields = ['poster'];
+    protected array $imageFields = ['poster', 'author_photo'];
 
     protected ?string $dateColumn = 'date';
 
     protected $table = 'works';
 
-    protected $fillable = ['type', 'title', 'slug', 'author', 'date', 'poster', 'content', 'is_published', 'sort_order'];
+    protected $fillable = ['type', 'title', 'slug', 'author', 'author_photo', 'author_birthplace', 'author_birthdate', 'author_school', 'date', 'poster', 'content', 'is_published', 'sort_order'];
 
-    protected $casts = ['date' => 'date'];
+    protected $casts = ['date' => 'date', 'author_birthdate' => 'date'];
 
     public static function label(string $type): string
     {
         return static::TYPES[$type][0] ?? ucfirst($type);
+    }
+
+    /** "Simpang Empat, 12 Mei 2010"; bagian yang kosong dilewati. */
+    public function authorBirth(): ?string
+    {
+        $date = $this->author_birthdate ? \App\Support\Site::tanggal($this->author_birthdate) : null;
+
+        return implode(', ', array_filter([$this->author_birthplace, $date])) ?: null;
     }
 
     public function typeLabel(): string

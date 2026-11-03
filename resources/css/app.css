@@ -122,6 +122,12 @@ html { scroll-padding-top: 84px; }
 .track { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 40px) / 3); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px; }
 .track::-webkit-scrollbar { display: none; }
 .track > * { scroll-snap-align: start; }
+.carousel:not(.static) .track { cursor: grab; }
+.track.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+.track.dragging > * { pointer-events: none; }
+/* slide sedikit (tidak bisa digeser): tanpa tombol « » dan garis bawah */
+.carousel.static .arrow { visibility: hidden; }
+.bar.hidden { display: none; }
 .track { padding: 6px 4px 14px; }
 /* satu slide = foto + keterangan dalam satu kartu */
 .slide { background: #fff; border-radius: 18px; box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; transition: transform .25s; }
@@ -427,7 +433,28 @@ html { scroll-padding-top: 84px; }
 .more { text-align: center; margin-top: 28px; }
 .work-author { color: var(--navy); font-weight: 600; font-size: 14px; }
 .work-type { margin-bottom: 10px; }
-.work-actions { margin-top: 24px; }
+/* daftar karya: poster landscape */
+.work-item { grid-template-columns: 180px 1fr; }
+.work-item .info-thumb .ph, .work-item .info-thumb img { aspect-ratio: 16 / 9; }
+/* detail karya: satu kolom di tengah, poster landscape di bawah judul */
+.detail.work-detail { display: block; max-width: 860px; margin: 0 auto; }
+.work-head { text-align: center; }
+.work-head .cap-tag { display: inline-block; }
+.work-poster { margin: 24px 0 18px; }
+.work-poster .ph, .work-poster img { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); }
+.work-detail .detail-meta { justify-content: center; }
+.work-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+.author-card { flex: 1 1 340px; display: flex; gap: 18px; align-items: center; background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--yellow); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); }
+.author-photo { flex: 0 0 96px; border-radius: 12px; overflow: hidden; }
+.author-photo .ph, .author-photo img { aspect-ratio: 4 / 5; width: 100%; object-fit: cover; font-size: 11px; }
+.author-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; color: var(--muted); font-size: 15px; }
+.author-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow-dark); }
+.author-info b { font-size: 18px; color: var(--navy-dark); }
+@media (max-width: 767px) {
+  .work-item { grid-template-columns: 120px 1fr; }
+  .author-card { flex-basis: 100%; }
+  .work-foot .btn { flex: 1 1 100%; }
+}
 .empty-note { color: var(--muted); text-align: center; padding: 32px 0; }
 
 /* ================= Nomor halaman ================= */

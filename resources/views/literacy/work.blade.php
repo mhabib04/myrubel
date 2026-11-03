@@ -1,4 +1,4 @@
-{{-- Detail satu karya: jenis, poster, penulis, tanggal, isi, tombol bagikan. $work --}}
+{{-- Detail satu karya: jenis, judul, poster, penulis, tanggal, isi, profil penulis, tombol bagikan. $work --}}
 @use('App\Support\Site')
 @extends('layouts.app', ['navActive' => 'karya', 'workType' => $work->type, 'shareImage' => $work->imageUrl('poster') ?: $logo])
 
@@ -9,13 +9,15 @@
 <section>
   <div class="container">
     <a class="back-link" data-back href="{{ Site::route('karya.index', $work->type) }}"><svg class="icon"><use href="#i-left"/></svg>Kembali ke {{ $work->typeLabel() }}</a>
-    {{-- poster mengapung di kanan, isi karya mengalir di bawahnya --}}
-    <article class="detail detail-article">
-      <div class="article-img">
+    {{-- jenis, judul, poster landscape, penulis & tanggal, isi; lalu kartu profil penulis + tombol bagikan --}}
+    <article class="detail work-detail">
+      <header class="work-head">
+        <span class="cap-tag work-type">{{ $work->typeLabel() }}</span>
+        <h1>{{ $work->title }}</h1>
+      </header>
+      <div class="work-poster">
         @include('partials.img', ['src' => $work->imageUrl('poster'), 'alt' => $work->title, 'ph' => 'POSTER KARYA', 'eager' => true])
       </div>
-      <span class="cap-tag work-type">{{ $work->typeLabel() }}</span>
-      <h1>{{ $work->title }}</h1>
       <div class="detail-meta">
         @if ($work->author)
         <span class="tag"><svg class="icon"><use href="#i-pen"/></svg>Karya oleh {{ $work->author }}</span>
@@ -25,9 +27,24 @@
       @if (filled($work->content))
       <div class="prose">{{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($work->content) }}</div>
       @endif
-      <div class="detail-actions work-actions">
+      <footer class="work-foot">
+        @if ($work->author)
+        <div class="author-card">
+          <div class="author-photo">@include('partials.img', ['src' => $work->imageUrl('author_photo'), 'alt' => $work->author, 'ph' => 'FOTO'])</div>
+          <div class="author-info">
+            <span class="author-label">Penulis</span>
+            <b>{{ $work->author }}</b>
+            @if ($birth = $work->authorBirth())
+            <span>{{ $birth }}</span>
+            @endif
+            @if ($work->author_school)
+            <span>{{ $work->author_school }}</span>
+            @endif
+          </div>
+        </div>
+        @endif
         @include('partials.share', ['shareTitle' => $work->title])
-      </div>
+      </footer>
     </article>
   </div>
 </section>
