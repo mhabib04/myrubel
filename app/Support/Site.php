@@ -106,6 +106,24 @@ class Site
         return $url && str_starts_with($url, '/') ? request()->getSchemeAndHttpHost().$url : $url;
     }
 
+    /**
+     * Ukuran & jenis gambar upload (di /storage/...) untuk og:image. Facebook butuh ini supaya
+     * gambar langsung tampil saat link pertama kali dibagikan.
+     *
+     * @return array{width: int, height: int, type: string}|null
+     */
+    public static function imageInfo(?string $url): ?array
+    {
+        $path = $url ? parse_url($url, PHP_URL_PATH) : null;
+        if (! $path || ! str_starts_with($path, '/storage/')) {
+            return null;
+        }
+        $file = storage_path('app/public/'.rawurldecode(substr($path, strlen('/storage/'))));
+        $size = is_file($file) ? @getimagesize($file) : false;
+
+        return $size ? ['width' => $size[0], 'height' => $size[1], 'type' => $size['mime']] : null;
+    }
+
     public static function unit(): string
     {
         return static::$unit;

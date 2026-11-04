@@ -22,8 +22,15 @@
   <meta property="og:title" content="@yield('title')">
   <meta property="og:description" content="@yield('description')">
   <meta property="og:url" content="{{ $canonical }}">
+  <meta property="og:locale" content="id_ID">
   @if ($ogImage)
   <meta property="og:image" content="{{ $ogImage }}">
+  @if ($ogInfo = \App\Support\Site::imageInfo($ogImage))
+  <meta property="og:image:width" content="{{ $ogInfo['width'] }}">
+  <meta property="og:image:height" content="{{ $ogInfo['height'] }}">
+  <meta property="og:image:type" content="{{ $ogInfo['type'] }}">
+  @endif
+  <meta property="og:image:alt" content="@yield('title')">
   <meta name="twitter:card" content="summary_large_image">
   @endif
   @if (\App\Support\Site::isHome())
