@@ -4,7 +4,7 @@
 <section @if ($bg) class="{{ $bg }}" @endif id="{{ $type }}" data-nav="karya">
   <div class="container">
     @include('partials.sec-title', ['title' => Work::label($type), 'sub' => Work::TYPES[$type][1]])
-    <div class="info-list">
+    <div class="info-list work-list">
       @foreach ($items as $work)
       @include('literacy.work-item', ['work' => $work])
       @endforeach

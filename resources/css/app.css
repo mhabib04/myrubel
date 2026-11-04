@@ -433,9 +433,12 @@ html { scroll-padding-top: 84px; }
 .more { text-align: center; margin-top: 28px; }
 .work-author { color: var(--navy); font-weight: 600; font-size: 14px; }
 .work-type { margin-bottom: 10px; }
-/* daftar karya: poster landscape */
-.work-item { grid-template-columns: 180px 1fr; }
-.work-item .info-thumb .ph, .work-item .info-thumb img { aspect-ratio: 16 / 9; }
+/* daftar karya: kartu tegak, poster landscape selebar kartu di atas, isi di bawahnya */
+.work-list { grid-template-columns: repeat(3, 1fr); }
+.work-item { display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden; border-left: 1px solid var(--border); border-top: 4px solid var(--yellow); }
+.work-item .info-thumb { border-radius: 0; align-self: stretch; }
+.work-item .info-thumb .ph, .work-item .info-thumb img { aspect-ratio: 16 / 9; padding: 0; }
+.work-item .info-body { flex: 1; padding: 16px 18px 18px; }
 /* detail karya: satu kolom di tengah, poster landscape di bawah judul */
 .detail.work-detail { display: block; max-width: 860px; margin: 0 auto; }
 .work-head { text-align: center; }
@@ -450,8 +453,11 @@ html { scroll-padding-top: 84px; }
 .author-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; color: var(--muted); font-size: 15px; }
 .author-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow-dark); }
 .author-info b { font-size: 18px; color: var(--navy-dark); }
+@media (max-width: 1080px) {
+  .work-list { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 767px) {
-  .work-item { grid-template-columns: 120px 1fr; }
+  .work-list { grid-template-columns: 1fr; }
   .author-card { flex-basis: 100%; }
   .work-foot .btn { flex: 1 1 100%; }
 }

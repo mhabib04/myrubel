@@ -14,7 +14,7 @@
     @if ($works->isEmpty())
     <p class="empty-note">Belum ada {{ strtolower(Work::label($type)) }} yang dipublikasikan.</p>
     @else
-    <div class="info-list">
+    <div class="info-list work-list">
       @foreach ($works as $work)
       @include('literacy.work-item', ['work' => $work])
       @endforeach
