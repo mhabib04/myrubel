@@ -230,3 +230,45 @@ document.querySelectorAll(".carousel").forEach((c) => {
   // hanya berjalan saat carousel terlihat di layar
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? start() : stop(); }, { threshold: 0.3 }).observe(c);
 });
+
+// ===== Scroll reveal (seperti LunarUI ScrollReveal) =====
+// Isi section (kecuali section pertama/hero) muncul naik perlahan saat masuk layar, sekali saja.
+// Item di dalam grid muncul bergantian. Kelas dipasang lewat JS, jadi tanpa JS semua tetap terlihat.
+if (!reduceMotion && "IntersectionObserver" in window) {
+  const STAGGER_MS = 80;
+  const targets = [];
+  [...document.querySelectorAll("main section, body > section")].slice(1).forEach((section) => {
+    section.querySelectorAll(":scope > .container > *").forEach((el) => {
+      const isGrid = getComputedStyle(el).display === "grid" && !el.classList.contains("carousel") && el.children.length > 1;
+      if (isGrid) {
+        [...el.children].forEach((child, i) => {
+          child.style.setProperty("--reveal-delay", `${Math.min(i, 5) * STAGGER_MS}ms`);
+          targets.push(child);
+        });
+      } else {
+        targets.push(el);
+      }
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      el.classList.add("revealed");
+      observer.unobserve(el);
+      // setelah muncul, kelas dilepas supaya efek hover kartu kembali seperti semula
+      el.addEventListener("transitionend", function done(ev) {
+        if (ev.target !== el || ev.propertyName !== "transform") return;
+        el.removeEventListener("transitionend", done);
+        el.classList.remove("reveal", "revealed");
+        el.style.removeProperty("--reveal-delay");
+      });
+    });
+  }, { rootMargin: "0px 0px -80px 0px" });
+
+  targets.forEach((el) => {
+    el.classList.add("reveal");
+    observer.observe(el);
+  });
+}

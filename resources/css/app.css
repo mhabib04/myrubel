@@ -492,3 +492,7 @@ a.pager-btn:hover, a.pager-num:hover { background: var(--navy); color: #fff; bor
 .error-box .btn { white-space: normal; height: auto; min-height: 50px; padding: 12px 24px; background: var(--yellow); color: var(--navy-dark); }
 .error-box .btn:hover { filter: brightness(.95); }
 .error-box .icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* ================= Scroll reveal: muncul naik saat masuk layar (kelas dipasang oleh app.js) ================= */
+.reveal { opacity: 0; transform: translateY(2rem); transition: opacity .5s ease, transform .5s ease; transition-delay: var(--reveal-delay, 0ms); }
+.reveal.revealed { opacity: 1; transform: none; }
